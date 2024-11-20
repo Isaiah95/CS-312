@@ -46,3 +46,7 @@ int main() {
     }
     return 0;
 }
+
+//Running time Analysis: reading from file is O(n) because it reads the file once and stores the words in a vector. Then findAnaagrams
+// is O(n) because it goes through the vector of words and sorts the words. The main function or user input is O(n) because it goes through the vector
+// of words and prints the anagrams. Therefore, the running time is O(n).
