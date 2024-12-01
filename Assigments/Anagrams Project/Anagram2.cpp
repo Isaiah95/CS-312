@@ -1,12 +1,24 @@
+#include <string>
+#include <vector>
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <unordered_map>
 #include <set>
-#include <algorithm>
-#include <string>
-#include <vector>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
+
+vector<string> readWordsFromFile(const string& filename) {
+    vector<string> words;
+    ifstream file(filename);
+    string word;
+    while (file >> word) {
+        words.push_back(word);
+    }
+    return words;
+}
 
 string alphabetize(const string &word) {
     string sorted_word = word;
@@ -42,30 +54,43 @@ vector<string> findAnagrams(const string &inputword, const unordered_map<string,
     return anagrams;
 }
 
-void processInputList(const vector<string> &inputList, const unordered_map<string, set<string>> &dictionary) {
-    for (const string &inputword : inputList) {
-        cout << "Word: " << inputword << endl;
-        vector<string> anagrams = findAnagrams(inputword, dictionary);
-        for (const string &anagram : anagrams) {
-            cout << anagram << endl;
+vector<string> findAnagramsPlusOne(const string &inputword, const unordered_map<string, set<string>> &dictionary) {
+    vector<string> result;
+    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    for (char letter : alphabet) {
+        string w = inputword + letter;
+        string signature = alphabetize(w);
+        if (dictionary.find(signature) != dictionary.end()) {
+            result.insert(result.end(), dictionary.at(signature).begin(), dictionary.at(signature).end());
         }
-        cout << endl;
     }
+    return result;
+}
+
+void processInput(const string &inputword, const unordered_map<string, set<string>> &dictionary) {
+    cout << "Word: " << inputword << endl;
+    vector<string> anagrams = findAnagrams(inputword, dictionary);
+    for (const string &anagram : anagrams) {
+        cout << anagram << endl;
+    }
+    cout << endl;
+
+    vector<string> anagramsPlusOne = findAnagramsPlusOne(inputword, dictionary);
+    cout << "Anagrams plus one for " << inputword << ":" << endl;
+    for (const string &anagram : anagramsPlusOne) {
+        cout << anagram << endl;
+    }
+    cout << endl;
 }
 
 int main() {
     unordered_map<string, set<string>> dictionary = loadDictionary("words.txt");
 
-    vector<string> inputlist1 = {"nut", "excuse", "selection", "detail", "glamorous", "fat", "reason", "price", "afford", "rare"};
-    vector<string> inputlist2 = {"graceful", "drop", "trousers", "tank", "can", "purple", "obedient", "tug", "courageous", "change", 
-    "barbarous", "brash", "mug", "dust", "creature", "pine", "print", "superficial", "equal", "illegal"};
-    vector<string> inputlist3 = {"joyous", "peaceful", "icky", "flood", "dispensable", "sprout", "serve", "tow", "kitty",
-     "play", "peep", "greedy", "provide", "overconfident", "aware", "materialistic", "servant", "alike", "building", 
-     "subtract", "wealth", "wood", "wreck", "squeak", "tender", "abusive", "camera", "telling", "addition", "oven"};
+    string inputword;
+    cout << "Enter a word: ";
+    cin >> inputword;
 
-    processInputList(inputlist1, dictionary);
-    processInputList(inputlist2, dictionary);
-    processInputList(inputlist3, dictionary);
+    processInput(inputword, dictionary);
 
     return 0;
 }
