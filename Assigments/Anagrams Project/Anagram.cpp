@@ -74,8 +74,8 @@ void processInputList(const string& listLabel, const vector<string>& inputList, 
         vector<string> anagrams = findAnagrams(inputword, words);
     }
     auto stop1 = high_resolution_clock::now();
-    auto duration1 = duration_cast<milliseconds>(stop1 - start1);
-    cout << "Time taken to process " << listLabel << " with solution 1: " << duration1.count() << " milliseconds" << endl;
+    auto duration1 = duration_cast<microseconds>(stop1 - start1);
+    cout << "Time taken to process " << listLabel << " with solution 2: " << duration1.count() << " microseconds" << endl;
 
     auto start2 = high_resolution_clock::now();
     for (const string& inputword : inputList) {
@@ -83,7 +83,7 @@ void processInputList(const string& listLabel, const vector<string>& inputList, 
     }
     auto stop2 = high_resolution_clock::now();
     auto duration2 = duration_cast<microseconds>(stop2 - start2);
-    cout << "Time taken to process " << listLabel << " with solution 2: " << duration2.count() << " microseconds" << endl;
+    cout << "Time taken to process " << listLabel << " with solution 1: " << duration2.count() << " microseconds" << endl;
 }
 
 int main() {
